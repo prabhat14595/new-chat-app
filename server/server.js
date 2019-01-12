@@ -15,13 +15,26 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) =>{
     console.log('New user connected');
 
+    // admin massage to our user
+    socket.emit('newMassage',{
+        from: 'Admin',
+        text: 'Welcome to our chat-app'
+    });
+
+    // broadcast to other user that new joined.
+    socket.broadcast.emit('newMassage',{
+        from: 'admin',
+        text: 'new user joined welcome him'
+    });
+
+
     socket.on('createMassage',(massage)=>{
         console.log('massge got from:: ', massage);
         io.emit('newMassage',{
             from: massage.from,
             text: massage.text,
             createdAt: new Date().getTime()
-        })
+        });
     });
 
 
