@@ -15,14 +15,13 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) =>{
     console.log('New user connected');
 
-    socket.emit('newMassage',{
-        from:'prabhat',
-        text: 'this is a maasage from me ',
-        createdAt: 1323
-    });
-
     socket.on('createMassage',(massage)=>{
         console.log('massge got from:: ', massage);
+        io.emit('newMassage',{
+            from: massage.from,
+            text: massage.text,
+            createdAt: new Date().getTime()
+        })
     });
 
 
